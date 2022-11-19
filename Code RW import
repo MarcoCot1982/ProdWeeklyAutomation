@@ -24,6 +24,7 @@ Dim Weeknumber As Integer
 
 'Constant "Jan1" declared "01/01/"
 Dim Jan1Year As String '("Jan1+Year")
+Dim Jan1Date As Date
 
 'References for sheet deletion
 Dim ReportedWeek As Integer
@@ -31,6 +32,7 @@ Dim Currentsheet As String
 Dim PrevSheetNo As Integer
 Dim PreviousSheet As String
 Dim RowsCounter As Long
+
 
     On Error GoTo ErrorControl
         Application.ScreenUpdating = False
@@ -57,6 +59,8 @@ ControlWeek:
             GoTo ControlWeek
         End If
             Jan1Year = Jan1 & EnteredYear
+            Jan1Date = DateValue(Jan1Year)
+
             If Weeknumber < 10 Then
                 ActiveSheet.Name = "RW0" & Weeknumber
                 Else: ActiveSheet.Name = "RW" & Weeknumber
@@ -66,19 +70,16 @@ ControlWeek:
         Range("G:G").NumberFormat = "0.00"
         Range("H:AM").NumberFormat = "0"
         Range("I:J").NumberFormat = "0.0"
-      
-        Range("WEEKMONDAY").Select
-'-------------------------------------------------------------------
-'CORREGIR ESTA FORMULA 
-        Range("WEEKMONDAY").FormulaR1C1 = Weeknumber * 7 + DateValue(Jan1Year) - Weekday(Weeknumber * 7 + DateValue(Jan1Year), 1) + 2
-'-------------------------------------------------------------------
         Range("WEEKMONDAY").NumberFormat = "dd/mm/yyyy"
-        
+
+        Range("WEEKMONDAY").FormulaR1C1 = (Weeknumber - 1) * 7 + (Jan1Date + 7) - Weekday(Jan1Date + 5, 1)
+
         RowsCounter = Application.WorksheetFunction.CountA(Range("A:A"))
         Range("WEEKMONDAY").Copy
+                  
         Range("E2:E" & RowsCounter).Select
         ActiveSheet.Paste
-       
+    
         Range("WEEKMONDAY").Select
         Application.CutCopyMode = False
         Application.ScreenUpdating = True
