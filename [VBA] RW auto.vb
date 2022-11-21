@@ -6,7 +6,7 @@ Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
         Range("E:E").NumberFormat = "dd/mm/yyyy"
 End Sub
 ---------------------------------------------------------------------------------------------
-Private Sub Workbook_Open()
+Private Sub Workbook_Open(Optional HideMe As String)
 '***********************************
 '** Author: Marco Cot DAS:A669714 **
 '***********************************
